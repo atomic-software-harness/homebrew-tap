@@ -7,7 +7,9 @@ class Uni < Formula
   url "https://github.com/atomic-software-harness/homebrew-tap/releases/download/v#{version}/uni-darwin-arm64.tar.gz"
   sha256 "adca1cedd7d3e20f508c9db0bffaf4466d54957bbec571fece29e5bdf29d9586"
 
-  depends_on "anthropic/tap/claude" => :recommended
+  # claude CLI は別経路（org 全体で配布済み）で install されている前提のため、
+  # brew の依存には宣言しない。宣言すると anthropic/tap の tap が必要になり、
+  # その clone で GitHub 認証を求められて install の障壁になる。必要性は caveats で告知。
   depends_on :macos => :sonoma
 
   def install
@@ -17,8 +19,10 @@ class Uni < Formula
 
   def caveats
     <<~EOS
-      uni runs Claude CLI under your account. The first invocation will
-      create ~/.uni/ and write ~/.uni/.claude/{settings.json,.mcp.json}.
+      uni runs Claude CLI under your account, so `claude` must already be
+      installed and authenticated (it is not a brew dependency of uni).
+      The first invocation will create ~/.uni/ and write
+      ~/.uni/.claude/{settings.json,.mcp.json}.
 
       To start:
         uni serve
