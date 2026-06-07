@@ -13,8 +13,10 @@ class Uni < Formula
   depends_on :macos => :sonoma
 
   def install
-    bin.install "uni-darwin-arm64/uni" => "uni"
-    prefix.install "uni-darwin-arm64/static"
+    # tar は uni-darwin-arm64/ 単一トップ階層のため、Homebrew が展開時にその中へ
+    # cd する。よって install ブロック内は uni / static を直接指す（プレフィックス不要）。
+    bin.install "uni"
+    prefix.install "static"
   end
 
   def caveats
