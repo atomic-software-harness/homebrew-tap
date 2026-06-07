@@ -13,10 +13,12 @@ class Uni < Formula
   depends_on :macos => :sonoma
 
   def install
-    # tar は uni-darwin-arm64/ 単一トップ階層のため、Homebrew が展開時にその中へ
-    # cd する。よって install ブロック内は uni / static を直接指す（プレフィックス不要）。
-    bin.install "uni"
-    prefix.install "static"
+    # uni は実行ファイルと同階層の static/ を SPA 配信元として解決する
+    # (process.execPath は symlink を解決するため、symlink 経由起動でも実体側を見る)。
+    # よって uni と static を libexec に同居させ、bin/uni はそこへの symlink にする。
+    # bin/uni と prefix/static のように分離すると static が隣に無く 404 になる。
+    libexec.install "uni", "static"
+    bin.install_symlink libexec/"uni"
   end
 
   def caveats
