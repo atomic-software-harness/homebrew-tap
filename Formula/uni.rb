@@ -2,10 +2,10 @@ class Uni < Formula
   desc "Atomic Software Harness AI client"
   # homepage は public な tap repo を指す（uni 本体は private で外部からは 404 のため）。
   homepage "https://github.com/atomic-software-harness/homebrew-tap"
-  version "0.1.0"
+  version "0.1.1"
   # binary は homebrew-tap 自身の Release に置かれる（public なので認証不要で取得可能）。
   url "https://github.com/atomic-software-harness/homebrew-tap/releases/download/v#{version}/uni-darwin-arm64.tar.gz"
-  sha256 "adca1cedd7d3e20f508c9db0bffaf4466d54957bbec571fece29e5bdf29d9586"
+  sha256 "90a4286a9987ffb207f0e3677ca4d4ef211fed89f8f8e19511c6442272f0b2fc"
 
   # claude CLI は別経路（org 全体で配布済み）で install されている前提のため、
   # brew の依存には宣言しない。宣言すると anthropic/tap の tap が必要になり、
