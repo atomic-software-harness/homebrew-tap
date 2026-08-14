@@ -2,7 +2,7 @@ class UniDev < Formula
   desc "Atomic Software Harness AI client (dev channel)"
   # homepage は public な tap repo を指す（uni 本体は private で外部からは 404 のため）。
   homepage "https://github.com/atomic-software-harness/homebrew-tap"
-  version "0.1.15"
+  version "0.1.16"
   # dev チャネルの tag は dev-v<version>、asset 名は uni-dev-darwin-arm64.tar.gz
   # （prd の v<version> / uni-darwin-arm64.tar.gz とは別 Release）。
   url "https://github.com/atomic-software-harness/homebrew-tap/releases/download/dev-v#{version}/uni-dev-darwin-arm64.tar.gz"
@@ -10,7 +10,7 @@ class UniDev < Formula
   # 時点で release-local.sh --dev が version と共に書き換える。
   # 書式は release-local.sh の sed（^ *sha256 "[0-9a-f]*"）に一致する必要があるため、
   # 16 進以外の文字（<REPLACE-ME> 等）を置かないこと。置くと置換が黙って空振りする。
-  sha256 "0000000000000000000000000000000000000000000000000000000000000000"
+  sha256 "d310e5fa5939ccd1e1acdb5b941616bfa2380c948da74f5fca2c18ee619f9bc5"
 
   # claude CLI は別経路（org 全体で配布済み）で install されている前提のため、
   # brew の依存には宣言しない。宣言すると anthropic/tap の tap が必要になり、
