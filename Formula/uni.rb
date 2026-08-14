@@ -17,17 +17,28 @@ class Uni < Formula
   depends_on :macos => :sonoma
 
   def install
-    # uni は実行ファイルと同階層の static/ を SPA 配信元として解決する
-    # (process.execPath は symlink を解決するため、symlink 経由起動でも実体側を見る)。
-    # よって uni と static を libexec に同居させ、bin/uni はそこへの symlink にする。
-    # bin/uni と prefix/static のように分離すると static が隣に無く 404 になる。
+    # uni と uni.env は全 version の tarball に必ず含まれる。
     #
     # uni.env: 配布バイナリには mise / .env.local が無いため、起動時に未設定の必須 env
-    #   （MCP URL / UNI_API_URL 等）を補完する uni.env を execPath 隣から読む。
-    #   これを入れ忘れると uni serve が env 欠落で無言 exit 1 する。
-    # ghostty-web: web terminal の実行時アセット（JS/WASM）。compiled binary には
-    #   node_modules が無く、execPath 隣の ghostty-web/ から読む。
-    libexec.install "uni", "static", "uni.env", "ghostty-web"
+    #   （MCP URL / UNI_API_URL 等）を補完する uni.env を execPath 隣から読む
+    #   (process.execPath は symlink を解決するため、symlink 経由起動でも実体側を見る)。
+    #   よって uni と uni.env を libexec に同居させ、bin/uni はそこへの symlink にする。
+    #   分離すると uni.env が隣に無く、getServerEnv() が必須 env 欠落で throw する。
+    libexec.install "uni", "uni.env"
+
+    # static / ghostty-web は v0.1.15 までの tarball にのみ存在する。SPA は S3 + CloudFront
+    # 配信へ移行し、以降の tarball は uni と uni.env の 2 つだけになった
+    # （uni 側 .github/workflows/release.yml と apps/uni-cli/scripts/release-local.sh の
+    # package ステップが実体）。release スクリプトは version / sha256 の行しか書き換えないため、
+    # ここを無条件 install にしておくと次の release で「static が無い」と install が落ちる。
+    # 新旧どちらの tarball でも通るよう、存在するときだけ install する。
+    #   static:      旧 SPA 配信元。execPath 隣から解決していた
+    #   ghostty-web: web terminal の実行時アセット（JS/WASM）。compiled binary には
+    #                node_modules が無く、execPath 隣の ghostty-web/ から読んでいた
+    %w[static ghostty-web].each do |legacy_asset|
+      libexec.install legacy_asset if File.exist?(legacy_asset)
+    end
+
     bin.install_symlink libexec/"uni"
   end
 
