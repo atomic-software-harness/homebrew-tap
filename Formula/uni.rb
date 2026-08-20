@@ -2,10 +2,10 @@ class Uni < Formula
   desc "Atomic Software Harness AI client"
   # homepage は public な tap repo を指す（uni 本体は private で外部からは 404 のため）。
   homepage "https://github.com/atomic-software-harness/homebrew-tap"
-  version "0.1.18"
+  version "0.1.19"
   # binary は homebrew-tap 自身の Release に置かれる（public なので認証不要で取得可能）。
   url "https://github.com/atomic-software-harness/homebrew-tap/releases/download/v#{version}/uni-darwin-arm64.tar.gz"
-  sha256 "24fce07ab43ff42f26853953261120f571590ba18093ab52ba6e378dd59e94c8"
+  sha256 "99e2374ac8131dc953ad235df9812098e17a538abddc1a8743997654831eeb1b"
   # formula 0.1.3 は tarball 同梱の uni.env / ghostty-web を libexec に入れ損ねていた
   # （uni 起動時に env を補完する uni.env が無く getServerEnv() が必須 env 欠落で throw →
   # 無言 exit 1）。tarball は無変更で install ブロックのみ修正のため revision で再 install を促す。
